@@ -1,0 +1,130 @@
+# ============================================================
+# 共享训练配置：模型、LORA、蒸馏参数、训练超参数
+# 所有实验复用此文件，通过 --config base_train.yaml + 数据配置 启动
+# ============================================================
+
+ablation:
+  wo_cot: false
+  wo_ocean: false
+  wo_gender: false
+  wo_age: false
+  wo_culture: false
+  wo_job_category: false
+  wo_general: false
+
+data:
+  base_dir: ./data_prepare/output/dataset_ethics/alpaca/qwen3-8b/limit_en_all/threshold_1.0/sample_role_5
+  train:
+    mode: auto
+    file_path:
+  valid:
+    mode: auto
+    file_path:
+  test:
+    mode: direct
+    file_path: ./data_prepare/output/dataset_ethics/alpaca/qwen3-8b/limit_en_all/threshold_1.0/sample_role_5/full/test.jsonl
+
+# 蒸馏方法: seqkd, kd, featkd
+distill_method: seqkd
+
+# 纯净版配置: True = 合并所有 token 计算损失，False = 拆分 think/infer 分别计算
+general_pure: true
+personalization_pure: false
+
+# 蒸馏损失配置
+adopt_hidden_loss: true
+adopt_logits_loss: true
+adopt_ce_loss: true
+
+ce_loss_config:
+  weight: 1.0
+hidden_loss_config:
+  weight: 0.1
+  loss_type: cosine
+logits_loss_config:
+  weight: 0.3
+  temperature: 3.0
+
+# 对比学习配置
+plugins:
+  - contrastive
+  - uncertainty
+contrastive_config:
+  enabled: true
+  embedding_dim: 128
+  temperature: 0.1
+  memory_bank_size: 4096
+  loss_weight: 1.0
+  max_negatives: 10
+  role_profile_path: ./data_prepare/output/create_roles/25/role_configs.jsonl
+  hamming_weight_scale: 1.0
+
+# 课程权重配置
+curriculum_config:
+  enabled: true
+  think_start: 1.0
+  think_end: 0.3
+  infer_start: 0.3
+  infer_end: 1.0
+
+# 不确定性加权配置
+uncertainty_config:
+  enabled: true
+  adopt_temp: true
+  temperature: 2.0
+  min_weight: 0.3
+
+# LoRA 配置
+lora_config:
+  r: 8
+  lora_alpha: 16
+  lora_dropout: 0.0
+  target_modules:
+    - gate_proj
+    - k_proj
+    - o_proj
+    - v_proj
+    - up_proj
+    - down_proj
+    - q_proj
+  bias: none
+  task_type: "CAUSAL_LM"
+
+# 模型配置 /autodl-tmp
+teacher_name_or_path: /mnt/i/pretrained_models/Qwen3/8B
+student_name_or_path: /mnt/i/pretrained_models/Qwen3/0.6B
+target_layer_indexes: [ -1 ]
+
+# 训练超参数
+max_length: 512
+seed: 42
+output_dir: ./output
+num_train_epochs: 1
+use_cpu: true
+no_cuda: true
+per_device_train_batch_size: 4
+per_device_eval_batch_size: 2
+gradient_accumulation_steps: 4
+torch_empty_cache_steps: 10
+#deepspeed: ./configs/ds_config.json
+do_train: true
+do_eval: true
+remove_unused_columns: False
+data_seed: 42
+lr_scheduler_type: cosine
+learning_rate: 0.0005
+weight_decay: 0.1
+warmup_ratio: 0.1
+bf16: true
+logging_steps: 30
+eval_steps: 2940
+save_steps: 2940
+eval_strategy: steps
+save_strategy: steps
+load_best_model_at_end: false
+metric_for_best_model: loss
+overwrite_output_dir: true
+save_only_model: true
+save_total_limit: 12
+patience: 3
+delta: 0.000

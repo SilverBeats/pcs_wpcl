@@ -1,0 +1,17 @@
+transformers==4.57.1
+peft>=0.10.0
+#deepspeed>=0.13.0
+accelerate>=0.27.0
+torch>=2.2.0
+pyyaml
+openai
+bert-score==0.3.13
+pyyaml>=6.0
+numpy>=1.24
+scipy>=1.10
+matplotlib>=3.7
+requests>=2.31
+tqdm>=4.65
+json_repair>=0.27
+git+https://github.com/silverbeats/lwj_tools.git
+vllm==0.19.1

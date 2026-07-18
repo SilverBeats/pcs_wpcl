@@ -1,0 +1,9 @@
+# Step 2: Similarity Calculation
+# Uses output from Step 1 as input
+
+controversy_config_path: ./configs/step1_controversy.yaml
+
+# 相似度计算服务
+calc_similarity:
+  base_url:
+  max_workers: 30

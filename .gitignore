@@ -1,0 +1,14 @@
+.claude
+.vscode
+.idea
+.DS_Store
+output
+data
+results*.md
+scripts
+*.sh
+backup
+.env
+test*
+generalization
+analyze

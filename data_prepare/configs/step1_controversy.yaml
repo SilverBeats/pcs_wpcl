@@ -1,0 +1,39 @@
+# Step 1: Event Controversy Judgment
+seed: 42
+# 数据集名称
+dataset: ethics
+# 数据源配置
+datasets:
+  ethics:
+    source_type: single_file
+    file_path: ./data/ethics/data.jsonl
+    sample_limit_by_lang:
+      en:
+
+# 处理哪些切分
+splits: [ train, valid, test ]
+
+# 事件划分比例
+split_events:
+  train_ratio: 8
+  valid_ratio: 1
+  test_ratio: 1
+
+# 输出目录
+output_dir: ./output
+
+# 争议性计算配置
+calc_controversy:
+  api_bases:
+  models:
+  api_keys:
+  max_workers: 6
+  generation_config:
+    seed: 42
+    top_p: 1.0
+    temperature: 1.0
+    #    max_tokens: 1024
+    response_format:
+      type: json_object
+    extra_body:
+      think: true

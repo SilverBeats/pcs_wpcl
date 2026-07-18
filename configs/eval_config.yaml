@@ -1,0 +1,23 @@
+verbose: true
+metrics:
+  - bart_score
+  - distinct
+  - bleu
+  - bert_score
+  - rouge
+  - meteor
+bert_score_config:
+  model_type: /mnt/e/llms/roberta/large #/mnt/i/pretrained_models/roberta/large
+  num_layers: 17
+  batch_size: 32
+  device: "cuda:0"
+bart_score_config:
+  name_or_path: /mnt/i/pretrained_models/bart/facebook/bart-large-cnn
+  batch_size: 4
+specific_config:
+  bert_score:
+    iter_size: 2048
+  bleu:
+    n: [ 1, 2, 3, 4 ]
+  distinct:
+    n: [ 1, 2, 3, 4 ]

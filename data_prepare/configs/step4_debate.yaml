@@ -1,0 +1,27 @@
+# Step 4: Teacher Debate Generation
+# Custom params: teacher_model, sample_role_cnt
+
+seed: 42
+splits: [ 'train', 'valid', 'test' ]
+# 辩论生成配置
+debate_generate:
+  api_bases:
+  models:
+  api_keys:
+  sample_role_cnt: 5
+  max_workers: 9
+  generation_config:
+    seed: 42
+    top_p: 1.0
+    temperature: 0.7
+    max_tokens: 2048
+    response_format:
+      type: json_object
+    extra_body:
+      think: true
+
+event_source:
+  controversy_config_path: ./configs/step1_controversy.yaml
+  filter_config_path: ./configs/step3_filter.yaml
+
+role_dir: ./output/create_roles/25

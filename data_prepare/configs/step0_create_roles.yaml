@@ -1,0 +1,23 @@
+output_dir: ./output/create_roles
+split: [ "train", "valid", "test" ]
+per_arch_type_cnt: 25
+seed: &seed 42
+
+split_role_profiles:
+  train_ratio: 8
+  valid_ratio: 1
+  test_ratio: 1
+
+create_roles:
+  api_bases:
+  models:
+  api_keys:
+  max_workers: 10
+  generation_config:
+    seed: *seed
+    top_p: 1.0
+    temperature: 1.0
+    response_format:
+      type: json_object
+    extra_body:
+      think: true

@@ -1,0 +1,48 @@
+# Step 6: Build Alpaca Dataset
+# Convert step4 debate generate output to alpaca format for training
+# Also supports ablation experiments via ablation_config
+# and different general data ratio
+
+seed: 42
+
+splits: [ 'train', 'valid', 'test' ]
+
+# Step4 output (debate dataset)
+debate_source: ./output/dataset_ethics/debate_generate/qwen3-8b/limit_en_all/threshold_1.0/sample_role_5
+
+# Event source (step3 output) - needed for personalization samples
+event_source: ./output/dataset_ethics/filter_low_quality_event/qwen3-8b/limit_en_all/threshold_1.0
+
+# Role source (step0 output)
+role_source: ./output/create_roles/25
+
+# Output directory(set None)
+output_dir:
+
+# General data directory
+general_source: ./data/general/en
+
+# Ablation experiment config (all False = full dataset)
+# Set individual flags to True to exclude that dimension
+ablation_config:
+  wo_cot: false           # Exclude chain-of-thought reasoning
+  wo_ocean: false         # Exclude OCEAN personality traits
+  wo_gender: false        # Exclude gender info
+  wo_age: false           # Exclude age info
+  wo_culture: false       # Exclude cultural background
+  wo_job_category: false  # Exclude job category
+  wo_general: false        # Exclude general (non-personalized) samples
+
+# if true, ablation_config will be ignored
+adopt_diff_general_ratio: false
+total_samples:
+  train: 150000
+  valid: 18750
+general_ratio: 0
+#  - 0
+#  - 0.05
+#  - 0.1
+#  - 0.15
+#  - 0.2
+#  - 0.25
+#  - 0.3

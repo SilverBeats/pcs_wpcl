@@ -1,0 +1,8 @@
+# Step 3: Threshold Filtering
+# Custom params: threshold (std multiplier)
+
+seed: 42
+controversy_config_path: ./configs/step1_controversy.yaml
+
+# 过滤阈值：mean + threshold_std * std
+threshold_std: 1.0
